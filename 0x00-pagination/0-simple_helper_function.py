@@ -1,43 +1,32 @@
 #!/usr/bin/env python3
-"""Module for function index_range and pagination"""
-
-import pandas as pd
-
+"""
+This module contains the function index_range that takes
+two integer arguments,page and page_size, and returns a
+tuple of size two containing a start index and an end index
+corresponding to the range of indexes to return in a list for 
+those particular pagination parameters.
+"""
 
 def index_range(page: int, page_size: int) -> tuple:
-    """
-    Calculate start and end index for pagination
+  """
+  Calculate start and end index for pagination
 
-    Parameters:
-    page (int): The current page
-    page_size (int): The number of items per page
+  Parameters:
+  page (int): The current page
+  page_size (int): The number of items per page
 
-    Returns:
-    tuple: A tuple of the start index and end index
-    """
-    start_index = (page - 1) * page_size
-    end_index = start_index + page_size
-    return start_index, end_index
+  Returns:
+  tuple: A tuple of the start index and end index
+  """
+  start_index = (page - 1) * page_size
+  end_index = page * page_size
+  return start_index, end_index
 
+if __name__ == "__main__":
+  res = index_range(1, 7)
+  print(type(res))
+  print(res)
 
-def paginate_data(page: int, page_size: int) -> pd.DataFrame:
-    """
-    Load data from CSV file and return a specific page
-
-    Parameters:
-    page (int): The current page
-    page_size (int): The number of items per page
-
-    Returns:
-    pd.DataFrame: A DataFrame of the data for the desired page
-    """
-    # Load the data from the CSV file
-    df = pd.read_csv('Popular_Baby_Names.csv')
-
-    # Get the start and end indices for the desired page
-    start_index, end_index = index_range(page, page_size)
-
-    # Get the data for the desired page
-    page_data = df.iloc[start_index:end_index]
-
-    return page_data
+  res = index_range(page=3, page_size=15)
+  print(type(res))
+  print(res)
