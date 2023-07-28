@@ -1,45 +1,46 @@
 #!/usr/bin/python3
+"""
+Module for LFUCache.
+"""
 
 from base_caching import BaseCaching
-from collections import OrderedDict
+from collections import Counter
 
 
 class LFUCache(BaseCaching):
     """
-    Create a class LFUCache that inherits from BaseCaching
-    and is a caching system
+    LFUCache class. Inherits from BaseCaching.
+    Uses caching system with least frequently used item (LFU algorithm)
     """
 
     def __init__(self):
         """
-        Initialize
+        Initialize.
         """
         super().__init__()
-        self.cache_order = OrderedDict()
+        self.frequency = Counter()
 
     def put(self, key, item):
         """
-        Assign to the dictionary self.cache_data the item value for the key
+        Add an item in the cache
         """
-        if key is not None and item is not None:
-
-            if key in self.cache_data:
-                self.cache_data.pop(key)
-                self.cache_order.pop(key)
-            elif len(self.cache_data) >= self.MAX_ITEMS:
-                oldest = next(iter(self.cache_order))
-                self.cache_data.pop(oldest)
-                self.cache_order.pop(oldest)
-                print("DISCARD: {}".format(oldest))
+        if None not in {key, item}:
+            if len(self.cache_data) > BaseCaching.MAX_ITEMS:
+                least_common = self.frequency.most_common()[:-2:-1]
+                if least_common:
+                    self.cache_data.pop(least_common[0][0])
+                    self.frequency.pop(least_common[0][0])
+                    print(f"DISCARD: {least_common[0][0]}")
 
             self.cache_data[key] = item
-            self.cache_order[key] = item
+            self.frequency[key] += 1
 
     def get(self, key):
         """
-        Return the value in self.cache_data linked to key
+        Get an item by key
         """
         if key is not None and key in self.cache_data:
-            self.cache_order.move_to_end(key)
+            self.frequency[key] += 1
             return self.cache_data.get(key)
-        return None
+        else:
+            return None
