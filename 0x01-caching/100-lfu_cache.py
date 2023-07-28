@@ -1,46 +1,47 @@
 #!/usr/bin/python3
 """
-Module for LFUCache.
+100-lfu_cache.py
+Module which contains a LFUCache class
 """
 
 from base_caching import BaseCaching
-from collections import Counter
+from collections import deque, Counter
 
 
 class LFUCache(BaseCaching):
-    """
-    LFUCache class. Inherits from BaseCaching.
-    Uses caching system with least frequently used item (LFU algorithm)
-    """
+    """LFUCache class"""
 
     def __init__(self):
-        """
-        Initialize.
-        """
+        """Initialize"""
         super().__init__()
-        self.frequency = Counter()
+        self.keys = []
+        self.counter = Counter()
 
     def put(self, key, item):
-        """
-        Add an item in the cache
-        """
-        if None not in {key, item}:
-            if len(self.cache_data) > BaseCaching.MAX_ITEMS:
-                least_common = self.frequency.most_common()[:-2:-1]
-                if least_common:
-                    self.cache_data.pop(least_common[0][0])
-                    self.frequency.pop(least_common[0][0])
-                    print(f"DISCARD: {least_common[0][0]}")
+        """Set the item in cache"""
+        if key is None or item is None:
+            return
 
-            self.cache_data[key] = item
-            self.frequency[key] += 1
+        if len(self.cache_data) >= self.MAX_ITEMS and key not in self.keys:
+            discarded_key, _ = self.counter.most_common()[:-2:-1][0]
+            del self.cache_data[discarded_key]
+            self.keys.remove(discarded_key)
+            print('DISCARD: {}'.format(discarded_key))
+
+        if key in self.cache_data:
+            self.keys.remove(key)
+        elif len(self.cache_data) >= self.MAX_ITEMS:
+            discarded_key = self.keys.popleft()
+            del self.cache_data[discarded_key]
+
+        self.cache_data[key] = item
+        self.keys.append(key)
 
     def get(self, key):
-        """
-        Get an item by key
-        """
-        if key is not None and key in self.cache_data:
-            self.frequency[key] += 1
-            return self.cache_data.get(key)
-        else:
-            return None
+        """Get an item by key"""
+        if key in self.cache_data:
+            self.counter[key] += 1
+            self.keys.remove(key)
+            self.keys.append(key)
+            return self.cache_data[key]
+        return None
