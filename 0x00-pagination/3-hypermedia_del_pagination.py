@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python3
 """
 Deletion-resilient hypermedia pagination
@@ -50,8 +49,10 @@ class Server:
         Returns:
             A dictionary containing the index, next_index, page_size, and data.
         """
-        assert isinstance(index, int) and index >= 0, "Index must be a non-negative integer"
-        assert isinstance(page_size, int) and page_size > 0, "Page size must be a positive integer"
+        assert isinstance(index, int) and index >= 0, \
+            "Index must be a non-negative integer"
+        assert isinstance(page_size, int) and page_size > 0, \
+            "Page size must be a positive integer"
 
         # Get the indexed dataset
         indexed_dataset = self.indexed_dataset()
@@ -61,7 +62,8 @@ class Server:
         page_end = page_start + page_size
         next_index = page_end
 
-        data = [indexed_dataset[i] for i in range(page_start, page_end) if i in indexed_dataset]
+        data = [indexed_dataset[i] for i in range(page_start, page_end)
+                if i in indexed_dataset]
 
         return {
             'index': page_start,
