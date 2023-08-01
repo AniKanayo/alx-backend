@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
-"""Module for Flask application"""
+"""A basic Flask application.
+"""
 from flask import Flask, render_template
 
 app = Flask(__name__)
 
 
 @app.route('/')
-def hello_world() -> str:
-    """Returns index.html when route '/' is requested"""
+def index() -> str:
+    """The main route which will display 'Hello, World'.
+    Returns:
+        str: The HTML template to display.
+    """
     return render_template('index.html')
 
 
