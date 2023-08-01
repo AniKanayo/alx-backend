@@ -10,7 +10,7 @@ app = Flask(__name__)
 def index() -> str:
     """The main route which will display 'Hello, World'.
     Returns:
-        str: The HTML template to display.
+        str: The HTML template to display..
     """
     return render_template('index.html')
 
