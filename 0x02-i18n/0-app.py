@@ -1,19 +1,20 @@
 #!/usr/bin/env python3
-"""A basic Flask application.
-"""
+"""Main Flask application file"""
+
 from flask import Flask, render_template
+from flask_babel import Babel
+from config import Config  # Importing the Config class
 
 app = Flask(__name__)
+app.config.from_object(Config)  # Using Config class for configuration
+babel = Babel(app)
 
 
 @app.route('/')
-def index() -> str:
-    """The main route which will display 'Hello, World'.
-    Returns:
-        str: The HTML template to display.
-    """
-    return render_template('index.html')
+def hello() -> str:
+    """Renders a basic HTML template"""
+    return render_template('1-index.html')
 
 
-# if __name__ == "__main__":
-#    app.run(host='0.0.0.0')
+if __name__ == "__main__":
+    app.run(debug=True)
