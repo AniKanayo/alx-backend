@@ -1,18 +1,28 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="{{ default_locale }}">
 <head>
-  <meta charset="utf-8">
-  <title>Hello world</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
 </head>
 <body>
-  <header>
-    <h1>Welcome to our website</h1>
-  </header>
-  <main>
-    <p>We hope you enjoy your stay!</p>
-  </main>
-  <footer>
-    <p>©2022, Some Company</p>
-  </footer>
+    <h1 id="header">Hello world</h1>
+    <script>
+        function getLanguage() {
+            // Send a request to the Flask app to get the appropriate language
+            fetch('/get_language')
+            .then(response => response.text())
+            .then(language => {
+                // Update the header text based on the received language
+                if (language === 'fr') {
+                    document.getElementById('header').innerText = 'Bonjour le monde';
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Call the getLanguage function when the page loads
+        document.addEventListener('DOMContentLoaded', getLanguage);
+    </script>
 </body>
 </html>
