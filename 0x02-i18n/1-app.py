@@ -16,6 +16,7 @@ class Config:
     BABEL_DEFAULT_LOCALE = "en"
     BABEL_DEFAULT_TIMEZONE = "UTC"
 
+
 babel = Babel(app)
 
 
@@ -23,8 +24,8 @@ babel = Babel(app)
 def index():
     """Route handler for the index page."""
     return render_template(
-        'index.html', 
-        title="Welcome to Holberton", 
+        'index.html',
+        title="Welcome to Holberton",
         header="Hello world"
     )
 
