@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Translation Test</title>
+</head>
+<body>
+    <h1 id="translation">Loading...</h1>
+
+    <script>
+        // Function to extract the locale from the URL
+        function getLocale() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('locale');
+        }
+
+        // Function to update the heading text with the translation
+        function updateHeading() {
+            const locale = getLocale() || 'en';
+
+            // Translations based on the locale
+            const translations = {
+                'fr': 'Bonjour le monde!',
+                'en': 'Hello, world!',
+            };
+
+            // Fetch the translation based on the locale, fallback to the default locale if needed
+            const translation = translations[locale] || translations['en'];
+
+            // Update the heading text with the translation
+            document.getElementById('translation').innerText = translation;
+        }
+
+        // Call the updateHeading function when the page loads
+        document.addEventListener('DOMContentLoaded', updateHeading);
+    </script>
+</body>
+</html>
